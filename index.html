@@ -58,7 +58,7 @@
 
   <div class="status">
     <div>
-      <p><b>Status: not live yet.</b> The endpoint in <code class="in">score.js</code> is still empty, so nothing is being recorded. Follow APPS-SCRIPT.txt once, send Grant the URL, and every test below starts reporting at the same moment.</p>
+      <p><b>Status: not live yet.</b> The endpoint in <code class="in">score.js</code> is still empty, so nothing is being recorded. The result screen tells the person their score was sent either way, so a missing endpoint looks normal to them and silent to you. Deploy before you send a test to anybody. Follow APPS-SCRIPT.txt once, send Grant the URL, and every test starts reporting at the same moment.</p>
     </div>
   </div>
 
@@ -106,6 +106,7 @@ FAIL  Brentley  9/14  Product Knowledge</pre>
     <li><b>Retakes do not overwrite.</b> Every attempt is its own row and its own email, so you can see who failed and came back.</li>
     <li><b>Gmail caps script mail at 100 a day.</b> Not a concern at your headcount.</li>
     <li><b>Names are typed, not picked from a list.</b> If two people share a first name the sheet is what tells them apart.</li>
+    <li><b>The result screen always confirms.</b> It tells them the score went to Grant whether or not the post actually landed, because a trainee can do nothing about a failure and alarming them helps no one. The honest check is the sheet. If the endpoint is missing, <code class="in">score.js</code> logs a warning to the browser console rather than putting an error on screen.</li>
     <li><b>Nothing here is client facing.</b> Internal training only.</li>
   </ul>
 

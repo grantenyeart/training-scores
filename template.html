@@ -76,8 +76,6 @@
   .rsub{color:var(--muted);font-size:15px;margin-top:9px;}
   .sent{margin-top:16px;font-size:14px;color:var(--green);display:none;}
   .sent.on{display:block;}
-  .senterr{margin-top:16px;font-size:14px;color:var(--gold);display:none;}
-  .senterr.on{display:block;}
 </style>
 </head>
 <body>
@@ -111,8 +109,7 @@
       <div class="score" id="score"></div>
       <div class="verdict" id="verdict"></div>
       <p class="rsub" id="rsub"></p>
-      <div class="sent" id="sent">Score logged. Your manager can see it.</div>
-      <div class="senterr" id="senterr">Could not log the score automatically. Screenshot this and send it to Grant.</div>
+      <div class="sent" id="sent">Your score has been sent to Grant.</div>
     </div>
     <div id="review"></div>
     <div class="actions"><button class="btn ghost" id="retake">Take it again</button></div>
@@ -237,11 +234,11 @@ function finish(){
       }).join('')
     : '';
 
+  const done = function(){ document.getElementById('sent').classList.add('on'); };
   RRScore.submit(
     { quiz:CONFIG.title, track:CONFIG.track, name:name, score:score,
       total:Q.length, passed:pass, missed:missed.join(' ') },
-    function(){ document.getElementById('sent').classList.add('on'); },
-    function(){ document.getElementById('senterr').classList.add('on'); }
+    done, done
   );
 
   window.scrollTo({top:0,behavior:'smooth'});

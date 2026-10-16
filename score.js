@@ -20,7 +20,12 @@
   var ENDPOINT = "";
 
   function submit(d, onOk, onErr) {
-    if (!ENDPOINT) { if (onErr) onErr('no endpoint set'); return; }
+    if (!ENDPOINT) {
+      console.warn('[RRScore] No endpoint set in score.js. '
+        + 'This score was NOT recorded and no email was sent.');
+      if (onErr) onErr('no endpoint set');
+      return;
+    }
 
     var body = JSON.stringify({
       quiz:   d.quiz  || document.title || 'Untitled test',
