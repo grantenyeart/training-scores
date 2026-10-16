@@ -1,0 +1,104 @@
+================================================================
+THE BACKEND
+One sheet, one inbox, every test you will ever run.
+Four minutes, once. You never touch it again.
+================================================================
+
+You are setting up a single endpoint. Every quiz on every
+training site posts to it. Adding a test later needs nothing
+here, the new test just shows up in the sheet with its own name.
+
+
+----------------------------------------------------------------
+STEP 1  Make the sheet
+----------------------------------------------------------------
+New Google Sheet. Name it "Rapid Reach Training Scores".
+Put these in row 1, A through H:
+
+   Timestamp | Training | Track | Name | Score | Out Of | Passed | Missed
+
+
+----------------------------------------------------------------
+STEP 2  Add the script
+----------------------------------------------------------------
+Extensions -> Apps Script. Delete what is there, paste this, save.
+
+var EMAIL_TO = 'grantenyeart@gmail.com';
+
+function doPost(e) {
+  var d = JSON.parse(e.postData.contents);
+  var pass  = d.passed ? 'PASS' : 'FAIL';
+  var quiz  = d.quiz  || 'Test';
+  var track = d.track || '';
+  var who   = d.name  || 'Someone';
+
+  SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
+    d.when || new Date(), quiz, track, who, d.score, d.total, pass, d.missed || ''
+  ]);
+
+  try {
+    var color  = d.passed ? '#1a7f37' : '#b42318';
+    var missed = d.missed ? d.missed.split(' ').join(', ') : 'nothing, perfect score';
+    var head   = track ? quiz + '  &middot;  ' + track : quiz;
+    var html =
+      '<div style="font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;max-width:460px;">' +
+      '<p style="font-size:12px;letter-spacing:.09em;text-transform:uppercase;' +
+        'color:#667085;margin:0 0 6px;">' + head + '</p>' +
+      '<h2 style="margin:0 0 2px;font-size:24px;color:#101828;">' + who + '</h2>' +
+      '<p style="margin:0 0 20px;font-size:34px;font-weight:700;color:' + color + ';">' +
+        d.score + ' / ' + d.total +
+        ' <span style="font-size:17px;letter-spacing:.06em;">' + pass + '</span></p>' +
+      '<table style="font-size:14px;color:#101828;border-collapse:collapse;">' +
+      '<tr><td style="padding:5px 16px 5px 0;color:#667085;">Missed</td>' +
+        '<td style="padding:5px 0;">' + missed + '</td></tr>' +
+      '<tr><td style="padding:5px 16px 5px 0;color:#667085;">Submitted</td>' +
+        '<td style="padding:5px 0;">' + (d.when || '') + '</td></tr>' +
+      '</table></div>';
+
+    MailApp.sendEmail({
+      to: EMAIL_TO,
+      subject: pass + '  ' + who + '  ' + d.score + '/' + d.total + '  ' + quiz,
+      htmlBody: html
+    });
+  } catch (err) {
+    // Score is already saved. Never lose a row because mail failed.
+  }
+
+  return ContentService.createTextOutput('ok');
+}
+
+To copy other people in, make it a comma separated list:
+   var EMAIL_TO = 'grantenyeart@gmail.com, ryan@example.com';
+
+
+----------------------------------------------------------------
+STEP 3  Deploy it
+----------------------------------------------------------------
+Deploy -> New deployment.
+Type: Web app.
+Execute as: Me.
+Who has access: ANYONE.          <- this one matters
+
+Approve the permissions. It warns you about sending mail as you,
+that is the email step, approve it. Copy the Web app URL:
+
+   https://script.google.com/macros/s/AKfy....../exec
+
+
+----------------------------------------------------------------
+STEP 4  Send me the URL
+----------------------------------------------------------------
+I put it in score.js. That is the only place it goes. Every test
+that exists now, and every test either of us builds later, starts
+reporting the moment that one line is filled in.
+
+
+----------------------------------------------------------------
+IF YOU EVER NEED TO CHANGE THE URL YOURSELF
+----------------------------------------------------------------
+Repo grantenyeart/training-scores, file score.js, the line:
+
+   var ENDPOINT = "";
+
+Paste between the quotes, commit, done. Every quiz everywhere
+picks it up on the next page load. You do not touch the quizzes.

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Training Scores &middot; Rapid Reach</title>
+<meta name="theme-color" content="#020817" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#020817;--bg2:#01030a;--card:#0b1322;--card2:#101c33;--border:#1e293b;--border2:#27364b;
+    --text:#f8fafc;--muted:#94a3b8;--muted2:#64748b;--gold:#f59e0b;--green:#34d399;
+    --grad:linear-gradient(135deg,#f59e0b,#eab308);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);
+    -webkit-font-smoothing:antialiased;line-height:1.55;}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(900px 500px at 85% -10%,rgba(245,158,11,.10),transparent 60%),
+               linear-gradient(180deg,var(--bg),var(--bg2));}
+  .wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:46px 20px 110px;}
+  .kicker{font-size:12px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  h1{font-size:clamp(30px,6vw,48px);font-weight:900;letter-spacing:-.02em;line-height:1.05;}
+  .gold{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .lead{color:var(--muted);font-size:16.5px;margin-top:15px;max-width:62ch;}
+  h2{font-size:21px;font-weight:800;margin:38px 0 6px;}
+  h2 .n{color:var(--gold);font-family:'Playfair Display',serif;margin-right:9px;}
+  p.body{color:var(--muted);font-size:15.5px;margin-top:9px;max-width:66ch;}
+  .card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--border2);
+    border-radius:14px;padding:20px 22px;margin:16px 0;}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}
+  pre{background:#060d1c;border:1px solid var(--border);border-radius:11px;padding:15px 17px;
+    overflow-x:auto;font-size:13.5px;color:#cbd5e1;margin:13px 0;line-height:1.6;}
+  code.in{background:#060d1c;border:1px solid var(--border);border-radius:6px;padding:2px 7px;
+    font-size:13.5px;color:var(--gold);}
+  .status{display:flex;gap:12px;align-items:flex-start;border-radius:13px;padding:16px 18px;margin:26px 0;
+    border:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.07);}
+  .status b{color:#fde68a;}
+  .status p{font-size:14.5px;color:#e2e8f0;}
+  ul{margin:11px 0 0 20px;color:var(--muted);font-size:15.5px;}
+  li{margin-bottom:7px;}
+  li b{color:var(--text);}
+  .t{width:100%;border-collapse:collapse;margin-top:13px;font-size:14.5px;}
+  .t th{text-align:left;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted2);
+    font-weight:800;padding:0 14px 9px 0;}
+  .t td{padding:7px 14px 7px 0;color:var(--muted);border-top:1px solid var(--border);}
+  .t td b{color:var(--text);font-weight:700;}
+  a.btn{display:inline-block;margin-top:16px;background:var(--grad);color:#0f172a;font-weight:800;
+    font-size:15px;border-radius:999px;padding:13px 27px;text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Rapid Reach &middot; Internal</div>
+  <h1>Training <span class="gold">scores</span></h1>
+  <p class="lead">Every test across every training reports to one sheet and one inbox. This page is how you add a test to anything, now or a year from now, without rebuilding the plumbing.</p>
+
+  <div class="status">
+    <div>
+      <p><b>Status: not live yet.</b> The endpoint in <code class="in">score.js</code> is still empty, so nothing is being recorded. Follow APPS-SCRIPT.txt once, send Grant the URL, and every test below starts reporting at the same moment.</p>
+    </div>
+  </div>
+
+  <h2><span class="n">1</span>How it works</h2>
+  <p class="body">One file holds the endpoint. Every quiz loads that file. No quiz contains a URL, so there is never a day where six quizzes point at five different places.</p>
+  <pre>quiz page  ->  score.js  ->  Apps Script  ->  Google Sheet
+                                           ->  Grant's inbox</pre>
+  <p class="body">Change the endpoint once in <code class="in">score.js</code> and every test on every site picks it up on the next page load. You never edit the quizzes.</p>
+
+  <h2><span class="n">2</span>Adding a test to any training</h2>
+  <p class="body">Copy <code class="in">template.html</code> into the training's repo. Edit two blocks and nothing else.</p>
+  <pre>const CONFIG = {
+  title: "Product Knowledge",   // heading, email subject, sheet column
+  track: "Closers",             // Setters, Closers, Everyone
+  pass:  11,                    // how many right to pass
+  back:  "./"                   // where the back arrow goes
+};
+
+const Q = [
+ {q:"The question.",
+  a:["Wrong","The right answer","Wrong","Wrong"],
+  c:1, e:"Why it is right. &lt;b&gt;Bold the part that matters.&lt;/b&gt;"}
+];</pre>
+  <p class="body"><code class="in">c</code> is the index of the correct answer counting from zero, so the second option is <code class="in">c:1</code>. The question count, the progress bar, the intro copy and the scoring all read themselves off <code class="in">Q</code> and <code class="in">CONFIG</code>. Add or remove questions freely, just keep <code class="in">pass</code> sensible.</p>
+  <a class="btn" href="template.html">Open the template &rarr;</a>
+
+  <h2><span class="n">3</span>What you get per submission</h2>
+  <p class="body">A row in the sheet and an email. The subject alone is enough to triage from your phone.</p>
+  <pre>PASS  Steven  14/15  Setter No-Show Quiz
+FAIL  Brentley  9/14  Product Knowledge</pre>
+  <table class="t">
+    <tr><th>Column</th><th>What lands in it</th></tr>
+    <tr><td><b>Timestamp</b></td><td>Eastern time, taken on their device at submit</td></tr>
+    <tr><td><b>Training</b></td><td>CONFIG.title, so each test is filterable</td></tr>
+    <tr><td><b>Track</b></td><td>Setters, Closers or Everyone</td></tr>
+    <tr><td><b>Name</b></td><td>Typed by the person taking it</td></tr>
+    <tr><td><b>Score / Out Of</b></td><td>Raw numbers, so you can sort</td></tr>
+    <tr><td><b>Passed</b></td><td>PASS or FAIL against CONFIG.pass</td></tr>
+    <tr><td><b>Missed</b></td><td>Which question numbers they got wrong</td></tr>
+  </table>
+
+  <h2><span class="n">4</span>Things worth knowing</h2>
+  <ul>
+    <li><b>The row is written before the email is attempted.</b> If Gmail hiccups or you hit the daily cap you lose a notification, never a score. The sheet is the source of truth.</li>
+    <li><b>Retakes do not overwrite.</b> Every attempt is its own row and its own email, so you can see who failed and came back.</li>
+    <li><b>Gmail caps script mail at 100 a day.</b> Not a concern at your headcount.</li>
+    <li><b>Names are typed, not picked from a list.</b> If two people share a first name the sheet is what tells them apart.</li>
+    <li><b>Nothing here is client facing.</b> Internal training only.</li>
+  </ul>
+
+</div>
+</body>
+</html>
