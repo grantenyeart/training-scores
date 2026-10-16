@@ -10,18 +10,23 @@ here, the new test just shows up in the sheet with its own name.
 
 
 ----------------------------------------------------------------
-STEP 1  Make the sheet
+STEP 1  Make the sheet                                     DONE
 ----------------------------------------------------------------
-New Google Sheet. Name it "Rapid Reach Training Scores".
-Put these in row 1, A through H:
+Already built and sitting in your Drive, headers in place:
 
+   Rapid Reach Training Scores
+   docs.google.com/spreadsheets/d/1-WyDAwOv6yEvfzevb6N8iEKXGpU8LRimDIncapeLPPc
+
+Row 1 reads:
    Timestamp | Training | Track | Name | Score | Out Of | Passed | Missed
 
 
 ----------------------------------------------------------------
 STEP 2  Add the script
 ----------------------------------------------------------------
-Extensions -> Apps Script. Delete what is there, paste this, save.
+Open that sheet. Extensions -> Apps Script. Delete what is there,
+paste this, save. It is also in paste-into-apps-script.js in this
+folder if you would rather select all and copy.
 
 var EMAIL_TO = 'grantenyeart@gmail.com';
 
