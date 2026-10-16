@@ -1,9 +1,9 @@
 /*  Paste this whole file into Apps Script.
-    Sheet: Rapid Reach Training Scores
-    Select all here, copy, replace everything in the editor, save.
-    To copy someone else in, add them to EMAIL_TO comma separated.  */
+    Writes to: Rapid Reach Training Scores
+    Select all here, copy, replace everything in the editor, save.  */
 
 var EMAIL_TO = 'grantenyeart@gmail.com';
+var SHEET_ID = '1-WyDAwOv6yEvfzevb6N8iEKXGpU8LRimDIncapeLPPc';
 
 function doPost(e) {
   var d = JSON.parse(e.postData.contents);
@@ -12,7 +12,7 @@ function doPost(e) {
   var track = d.track || '';
   var who   = d.name  || 'Someone';
 
-  SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
+  SpreadsheetApp.openById(SHEET_ID).getSheets()[0].appendRow([
     d.when || new Date(), quiz, track, who, d.score, d.total, pass, d.missed || ''
   ]);
 

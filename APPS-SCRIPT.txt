@@ -24,11 +24,12 @@ Row 1 reads:
 ----------------------------------------------------------------
 STEP 2  Add the script
 ----------------------------------------------------------------
-Open that sheet. Extensions -> Apps Script. Delete what is there,
-paste this, save. It is also in paste-into-apps-script.js in this
-folder if you would rather select all and copy.
+Go to script.google.com, open your project, delete what is there,
+paste this, save. The script names the sheet by its ID, so it works
+from a standalone project. It does not need to live inside the sheet.
 
 var EMAIL_TO = 'grantenyeart@gmail.com';
+var SHEET_ID = '1-WyDAwOv6yEvfzevb6N8iEKXGpU8LRimDIncapeLPPc';
 
 function doPost(e) {
   var d = JSON.parse(e.postData.contents);
@@ -37,7 +38,7 @@ function doPost(e) {
   var track = d.track || '';
   var who   = d.name  || 'Someone';
 
-  SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow([
+  SpreadsheetApp.openById(SHEET_ID).getSheets()[0].appendRow([
     d.when || new Date(), quiz, track, who, d.score, d.total, pass, d.missed || ''
   ]);
 
