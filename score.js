@@ -17,7 +17,7 @@
     it up on the next page load. No redeploying each quiz.
     ----------------------------------------------------------  */
 (function () {
-  var ENDPOINT = "";
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbwHc46f_yAc3s5rlK3txH5vpak8iJ2RgdeMVxDXpq4iyTXUgMRKpHgxSos0nVorbaxl/exec";
 
   function submit(d, onOk, onErr) {
     if (!ENDPOINT) {
